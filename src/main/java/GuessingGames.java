@@ -1,6 +1,7 @@
 import Exceptions.InvalidUserChoiceException;
 
 import java.sql.SQLOutput;
+import java.util.Random;
 import java.util.Scanner;
 
 public class GuessingGames {
@@ -11,7 +12,7 @@ public class GuessingGames {
      * Menu options
      */
     private static final String NUMBER_GAME = "Guess my number";
-    private static final String EXIT = "Exit Guessing Games Application";
+    private static final String EXIT = "Exit";
 
     /**
      * Array of menu  options
@@ -36,7 +37,7 @@ public class GuessingGames {
                 switch(userChoice) {
 
                     case NUMBER_GAME: {
-
+                        numberGuessingGame();
                         break;
                     }
                     case EXIT: {
@@ -57,6 +58,54 @@ public class GuessingGames {
         endOfApplication();
 
     }
+
+    /**
+     * Menu choice methods
+     */
+    public void numberGuessingGame() {
+        int numberOfGuesses = 0;
+        int userInt;
+        String yesOrNo;
+        String userGuess;
+        Random random = new Random();
+
+        int targetNumber = random.nextInt(101);
+
+        while (numberOfGuesses < 5) {
+            System.out.println("\nNumber of Guesses Remaining:" + (5-numberOfGuesses));
+            System.out.println("Guess a number between 0-100:");
+            userGuess = userKeyboardDevice.nextLine();
+
+            try {
+                userInt = Integer.parseInt(userGuess);
+                numberOfGuesses ++;
+                if (userInt > targetNumber) {
+                    System.out.println(userGuess + " is too high!");
+
+                } else {
+                    if (userInt == targetNumber) {
+                        System.out.println("Correct! You won in " + numberOfGuesses + " guesses!");
+                    } else {
+                        System.out.printf(userGuess + " is too low!");
+
+                    }
+                }
+            } catch (NumberFormatException exception) {
+                System.out.println("\n Invalid input, please enter an integer between 0-100");
+            }
+        }
+
+        System.out.println("Defeat! The number was: " + targetNumber);
+
+        System.out.println("Would you like to play again? (y/n)");
+        yesOrNo = userKeyboardDevice.nextLine();
+
+        if (yesOrNo.toLowerCase().startsWith("y")) {
+            numberGuessingGame();
+        }
+
+    }
+
 
     /**
      * Helper methods
