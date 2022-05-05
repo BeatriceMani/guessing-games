@@ -12,12 +12,14 @@ public class GuessingGames {
      * Menu options
      */
     private static final String NUMBER_GAME = "Guess my number";
+    private static final String COIN_TOSS = "Flip some coins";
     private static final String EXIT = "Exit";
 
     /**
      * Array of menu  options
      */
     private static final String[] mainMenuOptions = { NUMBER_GAME,
+            COIN_TOSS,
             EXIT
     };
 
@@ -40,6 +42,12 @@ public class GuessingGames {
                         numberGuessingGame();
                         break;
                     }
+
+                    case COIN_TOSS: {
+                        flipACoin();
+                        break;
+                    }
+
                     case EXIT: {
                         shouldLoop = false;
                         break;
@@ -106,6 +114,69 @@ public class GuessingGames {
 
     }
 
+    public void flipACoin() {
+
+        String userInput;
+        int coins = 0;
+        int roundsPlayed = 1;
+        int correctGuesses = 0;
+
+        System.out.println("Gathering coins...");
+        System.out.println("How many coins would you like to flip?");
+        System.out.println("Enter a number 0-10:");
+
+        userInput = userKeyboardDevice.nextLine();
+
+        try{
+            coins = Integer.parseInt(userInput);
+        } catch (NumberFormatException e) {
+            System.out.println("\n Invalid input, please try again.");
+            flipACoin();
+        }
+
+        while (roundsPlayed <= coins) {
+            Random random = new Random();
+            System.out.println("\n Round #" + roundsPlayed);
+            Boolean theCoin = random.nextBoolean();
+
+
+            String theCoinString;
+
+            if (theCoin) {
+                theCoinString = "heads";
+            } else {
+                theCoinString = "tails";
+            }
+
+            System.out.println("Will it be heads or tails?");
+            userInput = userKeyboardDevice.nextLine().trim();
+
+            if ((userInput.startsWith("h") && theCoin) || (userInput.startsWith("t") && !theCoin) ) {
+                System.out.println("Correct!");
+                correctGuesses ++;
+            } else {
+                System.out.println("Incorrect!");
+            }
+
+            System.out.println("\n You guessed " + userInput +". The coin was " + theCoinString);
+
+            if (roundsPlayed == coins) {
+                System.out.println("\n You won " + correctGuesses + " out of " + coins + " rounds.");
+            }
+
+            roundsPlayed ++;
+        }
+
+        System.out.println("\n Would you like to play again?" );
+
+        userInput = userKeyboardDevice.nextLine();
+
+        if (userInput.startsWith("y")) {
+            flipACoin();
+        }
+
+
+    }
 
     /**
      * Helper methods
